@@ -1,7 +1,11 @@
 @import "tailwindcss";
 
-#root {
+:root {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
+}
+
+@theme {
+  --color-rabbit-red: #ea2e0e;
 }
