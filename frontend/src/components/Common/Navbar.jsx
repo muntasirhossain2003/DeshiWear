@@ -12,7 +12,7 @@ const Navbar = () => {
         {/*Left - Logo */}
         <div>
           <Link to="/" className="text-2xl font-medium">
-            Rabbit
+            DeshiWEAR
           </Link>
         </div>
         {/*Center-navigation link */}
@@ -56,7 +56,10 @@ const Navbar = () => {
             </span>
           </button>
           {/* Search */}
-          <SearchBar />
+          <div className="overflow-hidden">
+            <SearchBar />
+          </div>
+
           <button className="md:hidden">
             <HiBars3BottomRight className="h-6 w-6 text-gray-700" />
           </button>
