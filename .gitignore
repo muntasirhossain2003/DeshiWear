@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Env & secrets
+.env
+.env.local
+
+# Embedded dev database
+backend/.mongo-data/
+
+# Build output
+frontend/dist/
+
+# Editor / tooling
+.vscode/
+.qodo/
+*.log
