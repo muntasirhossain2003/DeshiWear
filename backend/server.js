@@ -14,7 +14,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const PORT = process.env.PORT || 9000;
+const PORT = process.env.PORT || 9002;
 
 app.get("/", (req, res) => {
   res.send("DeshiWear API is running");

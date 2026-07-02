@@ -21,7 +21,10 @@ DeshiWear is a modern e-commerce platform specializing in traditional and contem
 
 ### Backend
 
-- [Backend technology details to be added]
+- Node.js + Express REST API
+- MongoDB with Mongoose (embedded dev DB, Atlas-ready)
+- JWT authentication (customer/admin roles)
+- Cash on Delivery orders with Dhaka-aware delivery charges
 
 ## 📦 Installation
 
@@ -32,18 +35,26 @@ git clone https://github.com/muntasirhossain2003/DeshiWear.git
 cd DeshiWear
 ```
 
-2. Install frontend dependencies:
+2. Start the backend (API on http://localhost:9002 — an embedded MongoDB starts automatically, no install needed):
+
+```bash
+cd backend
+npm install
+npm run seed   # first time only: loads 20 products + admin account
+npm run dev
+```
+
+3. Start the frontend (http://localhost:5173) in a second terminal:
 
 ```bash
 cd frontend
 npm install
-```
-
-3. Start the development server:
-
-```bash
 npm run dev
 ```
+
+Admin login: `admin@deshiwear.com` / `admin123` → then visit `/admin`.
+
+For a real database, set `MONGO_URI` in `backend/.env` to a MongoDB Atlas connection string.
 
 ## 🌐 Environment Setup
 
