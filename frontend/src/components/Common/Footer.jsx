@@ -4,135 +4,95 @@ import { RiTwitterXLine } from "react-icons/ri";
 import { TbBrandMeta } from "react-icons/tb";
 import { Link } from "react-router-dom";
 
+const shopLinks = [
+  { label: "Men", to: "/collections/all?gender=Men" },
+  { label: "Women", to: "/collections/all?gender=Women" },
+  { label: "Eid Collection", to: "/collections/Eid Collection" },
+  { label: "Heritage Collection", to: "/collections/Heritage Collection" },
+];
+
+const supportLinks = ["Contact Us", "About Us", "FAQs", "Shipping & Returns"];
+
 const Footer = () => {
   return (
-    <footer className="border-t py-12">
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 px-4 lg:px-0">
+    <footer className="bg-ink text-white/80 pt-14 pb-6 mt-16">
+      <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 px-4">
         <div>
-          <h3 className="text-lg text-gray-800 mb-4">Newsletter</h3>
-          <p className="text-gray-500 mb-4">
-            Be the first to hear about new products , exclusive events and
-            online offers.
+          <h3 className="font-display text-2xl font-bold text-white mb-3">
+            Deshi<span className="text-deshi-gold">Wear</span>
+          </h3>
+          <p className="text-sm leading-relaxed mb-4">
+            Traditional and contemporary Bangladeshi fashion — from Jamdani
+            heritage to urban street style. Made with ❤️ in Bangladesh.
           </p>
-          <p className="font-medium text-sm text-gray-600 mb-6">
+          <p className="font-medium text-sm text-deshi-gold mb-4">
             Sign up and get 10% off your first order
           </p>
-
-          {/* NewsLetter Form */}
-          <form className="flex">
+          <form className="flex" onSubmit={(e) => e.preventDefault()}>
             <input
               type="email"
               placeholder="Enter your email"
-              className="p-3 w-full text-sm border-t border-l border-b border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-gray-500 transition-all"
+              className="p-3 w-full text-sm bg-white/10 border border-white/20 rounded-l-md focus:outline-none focus:ring-1 focus:ring-deshi-gold placeholder:text-white/50"
             />
             <button
               type="submit"
-              className="bg-black text-white px-3 text-sm rounded-r-md hover:bg-gray-800"
+              className="bg-deshi-green text-white px-4 text-sm rounded-r-md hover:bg-deshi-green-dark transition-colors font-medium"
             >
-              Suscribe
+              Subscribe
             </button>
           </form>
         </div>
-        {/* Shop Link */}
+
         <div>
-          <h3 className="text-lg text-gray-800 mb-4">Shop</h3>
-          <ul className="space-y-2 text-gray-600">
-            <li>
-              <Link to="#" className="hover:text-gray-500 transition-colors">
-                Men's Top wear
-              </Link>
-            </li>
-
-            <li>
-              <Link to="#" className="hover:text-gray-500 transition-colors">
-                Women's Top wear
-              </Link>
-            </li>
-
-            <li>
-              <Link to="#" className="hover:text-gray-500 transition-colors">
-                Men's Bottom wear
-              </Link>
-            </li>
-
-            <li>
-              <Link to="#" className="hover:text-gray-500 transition-colors">
-                Women's Bottom wear
-              </Link>
-            </li>
+          <h3 className="text-white font-semibold mb-4 uppercase text-sm tracking-widest">Shop</h3>
+          <ul className="space-y-2.5 text-sm">
+            {shopLinks.map((link) => (
+              <li key={link.label}>
+                <Link to={link.to} className="hover:text-deshi-gold transition-colors">
+                  {link.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
-        {/* Support Links */}
+
         <div>
-          <h3 className="text-lg text-gray-800 mb-4">Support</h3>
-          <ul className="space-y-2 text-gray-600">
-            <li>
-              <Link to="#" className="hover:text-gray-500 transition-colors">
-                Contact Us
-              </Link>
-            </li>
-
-            <li>
-              <Link to="#" className="hover:text-gray-500 transition-colors">
-                About Us
-              </Link>
-            </li>
-
-            <li>
-              <Link to="#" className="hover:text-gray-500 transition-colors">
-                FAQs
-              </Link>
-            </li>
-
-            <li>
-              <Link to="#" className="hover:text-gray-500 transition-colors">
-                Features
-              </Link>
-            </li>
+          <h3 className="text-white font-semibold mb-4 uppercase text-sm tracking-widest">Support</h3>
+          <ul className="space-y-2.5 text-sm">
+            {supportLinks.map((label) => (
+              <li key={label}>
+                <Link to="#" className="hover:text-deshi-gold transition-colors">
+                  {label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
-        {/* Follow us section */}
+
         <div>
-          <h3 className="text-lg text-gray-800 mb-4">Follow Us</h3>
+          <h3 className="text-white font-semibold mb-4 uppercase text-sm tracking-widest">Follow Us</h3>
           <div className="flex items-center space-x-4 mb-6">
-            <a
-              href="https://www.facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-gray-500"
-            >
+            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Meta" className="hover:text-deshi-gold transition-colors">
               <TbBrandMeta className="h-5 w-5" />
             </a>
-
-            <a
-              href="https://www.facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-gray-500"
-            >
+            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="hover:text-deshi-gold transition-colors">
               <IoLogoInstagram className="h-5 w-5" />
             </a>
-
-            <a
-              href="https://www.facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-gray-500"
-            >
+            <a href="https://www.x.com" target="_blank" rel="noopener noreferrer" aria-label="X" className="hover:text-deshi-gold transition-colors">
               <RiTwitterXLine className="h-4 w-4" />
             </a>
           </div>
-          <p className="text-gray-500">Call Us</p>
-          <p>
+          <p className="text-sm text-white/60">Call Us (10am – 10pm)</p>
+          <p className="text-white mt-1">
             <FiPhoneCall className="inline-block mr-2" />
-            0123-456-789
+            (+880) 1748 004936
           </p>
         </div>
       </div>
-      {/* Footer Bottom */}
-      <div className="container mx-auto mt-12 lg:px-0 border-t border-gray-200 pt-6">
-        <p className="text-gray-500 text-sm tracking-tighter text-center">
-          © {new Date().getFullYear()} DeshiWear. All rights reserved.
+
+      <div className="container mx-auto mt-12 px-4 border-t border-white/10 pt-6">
+        <p className="text-white/50 text-sm text-center">
+          © {new Date().getFullYear()} DeshiWear. All rights reserved. Made in Bangladesh 🇧🇩
         </p>
       </div>
     </footer>

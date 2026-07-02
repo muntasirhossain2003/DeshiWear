@@ -1,11 +1,65 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300..800&family=Noto+Sans+Bengali:wght@400;600&display=swap");
 @import "tailwindcss";
 
-:root {
-  font-family: "Inter", sans-serif;
-  font-optical-sizing: auto;
-  font-style: normal;
+@theme {
+  /* Brand — inspired by the Bangladeshi flag, toned for premium fashion */
+  --color-deshi-green: #006a4e;
+  --color-deshi-green-dark: #004d38;
+  --color-deshi-red: #e8402a;
+  --color-deshi-gold: #c9a227;
+
+  /* Neutrals */
+  --color-ivory: #faf8f4;
+  --color-sand: #f0eae0;
+  --color-ink: #1c1917;
+  --color-ink-soft: #57534e;
+
+  --font-display: "Playfair Display", "Noto Sans Bengali", serif;
+  --font-sans: "Inter", "Noto Sans Bengali", sans-serif;
 }
 
-@theme {
-  --color-rabbit-red: #ea2e0e;
+:root {
+  font-family: var(--font-sans);
+  font-optical-sizing: auto;
+  color: var(--color-ink);
+  background-color: var(--color-ivory);
+}
+
+/* Hide scrollbar for horizontal product rails */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Soft entrance used on page sections */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  animation: fade-up 0.6s ease-out both;
+}
+
+/* Skeleton shimmer */
+@keyframes shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}
+.skeleton {
+  background: linear-gradient(90deg, #eee8de 25%, #f7f3ec 50%, #eee8de 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite linear;
 }

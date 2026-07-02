@@ -1,54 +1,60 @@
 import { useState } from "react";
 import { HiMagnifyingGlass, HiMiniXMark } from "react-icons/hi2";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSearchToggle = () => {
-    setIsOpen(!isOpen);
-  };
+  const handleSearchToggle = () => setIsOpen(!isOpen);
+
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log("Search Term:", searchTerm);
+    if (searchTerm.trim()) {
+      navigate(`/collections/all?search=${encodeURIComponent(searchTerm.trim())}`);
+    }
     setIsOpen(false);
+    setSearchTerm("");
   };
+
   return (
     <div
       className={`flex items-center justify-center w-full transition-all duration-300 ${
-        isOpen ? "absolute top-0 left-0 w-full bg-white h-24 z-50" : "w-auto"
+        isOpen ? "absolute top-0 left-0 w-full bg-ivory h-24 z-50 shadow-md" : "w-auto"
       }`}
     >
       {isOpen ? (
-        <form
-          onSubmit={handleSearch}
-          className="relative flex items-center justify-center w-full"
-        >
-          <div className="relative w-1/2">
+        <form onSubmit={handleSearch} className="relative flex items-center justify-center w-full">
+          <div className="relative w-3/4 md:w-1/2">
             <input
               type="text"
-              placeholder="Search"
+              placeholder="Search sarees, panjabis, kurtis…"
               value={searchTerm}
+              autoFocus
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="bg-gray-100 px-4 py-2 pl-2 pr-12 rounded-lg focus:outline-none w-full placeholder:text-gray-700"
+              className="bg-sand px-4 py-2.5 pr-12 rounded-full focus:outline-none focus:ring-2 focus:ring-deshi-green w-full placeholder:text-ink-soft/70 text-sm"
             />
-            {/* Search icon */}
-            <button className="absolute right-2 top-1/2\ transform -translet-y-1/2 text-gray-600 hover:text-gray-800">
-              <HiMagnifyingGlass className="h-6 w-6" />
+            <button
+              type="submit"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-soft hover:text-deshi-green transition-colors"
+              aria-label="Search"
+            >
+              <HiMagnifyingGlass className="h-5 w-5" />
             </button>
           </div>
-          {/* Close button */}
           <button
             type="button"
             onClick={handleSearchToggle}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800"
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-ink-soft hover:text-ink transition-colors"
+            aria-label="Close search"
           >
             <HiMiniXMark className="h-6 w-6" />
           </button>
         </form>
       ) : (
-        <button onClick={handleSearchToggle}>
-          <HiMagnifyingGlass className="h-6 w-6" />
+        <button onClick={handleSearchToggle} aria-label="Open search">
+          <HiMagnifyingGlass className="h-6 w-6 text-ink-soft hover:text-deshi-green transition-colors" />
         </button>
       )}
     </div>
