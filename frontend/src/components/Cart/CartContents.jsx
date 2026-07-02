@@ -1,59 +1,86 @@
 import { RiDeleteBin3Line } from "react-icons/ri";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  removeFromCart,
+  updateCartItemQuantity,
+} from "../../redux/slices/cartSlice";
+import { formatBDT } from "../../utils/currency";
 
 const CartContents = () => {
-  const cartProducts = [
-    {
-      productId: 1,
-      name: "T-shirt",
-      size: "M",
-      color: "Red",
-      price: 20,
-      quantity: 1,
-      image: "https://picsum.photos/200?random=1",
-    },
-    {
-      productId: 2,
-      name: "Jeans",
-      size: "M",
-      color: "Blue",
-      price: 15,
-      quantity: 2,
-      image: "https://picsum.photos/200?random=2",
-    },
-  ];
+  const dispatch = useDispatch();
+  const { cart } = useSelector((state) => state.cart);
+  const { user, guestId } = useSelector((state) => state.auth);
+
+  const ids = { guestId, userId: user?._id };
+
+  const handleQuantity = (item, delta) => {
+    dispatch(
+      updateCartItemQuantity({
+        productId: item.productId,
+        quantity: item.quantity + delta,
+        size: item.size,
+        color: item.color,
+        ...ids,
+      })
+    );
+  };
+
+  const handleRemove = (item) => {
+    dispatch(
+      removeFromCart({
+        productId: item.productId,
+        size: item.size,
+        color: item.color,
+        ...ids,
+      })
+    );
+  };
+
+  if (!cart?.products?.length) {
+    return (
+      <div className="text-center py-14">
+        <p className="font-display text-xl mb-1">Your cart is empty</p>
+        <p className="text-sm text-ink-soft">Add something you love.</p>
+      </div>
+    );
+  }
+
   return (
     <div>
-      {cartProducts.map((product, index) => (
-        <div
-          key={index}
-          className="flex items-start justify-between py-4 border-b"
-        >
-          <div className="flex items-start ">
+      {cart.products.map((item, index) => (
+        <div key={index} className="flex items-start justify-between py-4 border-b border-sand">
+          <div className="flex items-start">
             <img
-              src={product.image}
-              alt={product.name}
-              className="w-20 h-24 object-cover mr-4 rounded"
+              src={item.image}
+              alt={item.name}
+              className="w-20 h-24 object-cover mr-4 rounded-lg"
             />
             <div>
-              <h3>{product.name}</h3>
-              <p className="text-sm text-gray-500">
-                size: {product.size} | Color: {product.color}
+              <h3 className="font-medium text-sm">{item.name}</h3>
+              <p className="text-xs text-ink-soft mt-0.5">
+                Size: {item.size} | Color: {item.color}
               </p>
-              <div className="flex items-center mt-2">
-                <button className="border rounded px-2 py-1 text-xl font medium">
-                  -
+              <div className="flex items-center mt-2.5">
+                <button
+                  onClick={() => handleQuantity(item, -1)}
+                  className="border border-gray-300 rounded-full w-7 h-7 text-base font-medium hover:border-deshi-green transition-colors"
+                >
+                  −
                 </button>
-                <span className="mx-4">{product.quantity}</span>
-                <button className="border rounded px-2 py-1 text-xl font medium">
+                <span className="mx-3.5 text-sm font-semibold">{item.quantity}</span>
+                <button
+                  onClick={() => handleQuantity(item, 1)}
+                  className="border border-gray-300 rounded-full w-7 h-7 text-base font-medium hover:border-deshi-green transition-colors"
+                >
                   +
                 </button>
               </div>
             </div>
           </div>
-          <div>
-            <p>${product.price.toLocaleString()}</p>
-            <button>
-              <RiDeleteBin3Line className="h-6 w-6 mt-2 text-red-600" />
+          <div className="text-right">
+            <p className="font-semibold text-sm">{formatBDT(item.price * item.quantity)}</p>
+            <button onClick={() => handleRemove(item)} aria-label="Remove item">
+              <RiDeleteBin3Line className="h-5 w-5 mt-2 text-deshi-red hover:scale-110 transition-transform" />
             </button>
           </div>
         </div>
