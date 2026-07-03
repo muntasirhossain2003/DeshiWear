@@ -1,4 +1,5 @@
 import { Outlet } from "react-router-dom";
+import ChatWidget from "../Common/ChatWidget";
 import Footer from "../Common/Footer";
 import Header from "../Common/Header";
 
@@ -10,6 +11,7 @@ const UserLayout = () => {
         <Outlet />
       </main>
       <Footer />
+      <ChatWidget />
     </div>
   );
 };
