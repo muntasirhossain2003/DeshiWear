@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { HiOutlineEye, HiOutlineEyeSlash } from "react-icons/hi2";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -8,6 +9,7 @@ import { fetchCart, mergeCart } from "../../redux/slices/cartSlice";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -68,14 +70,24 @@ const Login = () => {
         </label>
         <label className="block mb-6">
           <span className="text-sm font-semibold">Password</span>
-          <input
-            type="password"
-            value={password}
-            required
-            onChange={(e) => setPassword(e.target.value)}
-            className="mt-1.5 w-full border border-sand rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-deshi-green bg-ivory"
-            placeholder="••••••••"
-          />
+          <div className="relative mt-1.5">
+            <input
+              type={showPassword ? "text" : "password"}
+              value={password}
+              required
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full border border-sand rounded-lg p-3 pr-11 text-sm focus:outline-none focus:ring-2 focus:ring-deshi-green bg-ivory"
+              placeholder="••••••••"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-soft hover:text-ink transition-colors"
+            >
+              {showPassword ? <HiOutlineEyeSlash className="h-5 w-5" /> : <HiOutlineEye className="h-5 w-5" />}
+            </button>
+          </div>
         </label>
 
         <button
