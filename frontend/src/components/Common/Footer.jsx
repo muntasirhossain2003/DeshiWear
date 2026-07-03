@@ -28,15 +28,15 @@ const Footer = () => {
           <p className="font-medium text-sm text-deshi-gold mb-4">
             Sign up and get 10% off your first order
           </p>
-          <form className="flex" onSubmit={(e) => e.preventDefault()}>
+          <form className="flex w-full max-w-sm" onSubmit={(e) => e.preventDefault()}>
             <input
               type="email"
               placeholder="Enter your email"
-              className="p-3 w-full text-sm bg-white/10 border border-white/20 rounded-l-md focus:outline-none focus:ring-1 focus:ring-deshi-gold placeholder:text-white/50"
+              className="flex-1 min-w-0 p-3 text-sm bg-white/10 border border-white/20 rounded-l-md focus:outline-none focus:ring-1 focus:ring-deshi-gold placeholder:text-white/50"
             />
             <button
               type="submit"
-              className="bg-deshi-green text-white px-4 text-sm rounded-r-md hover:bg-deshi-green-dark transition-colors font-medium"
+              className="shrink-0 whitespace-nowrap bg-deshi-green text-white px-4 text-sm rounded-r-md hover:bg-deshi-green-dark transition-colors font-medium"
             >
               Subscribe
             </button>
