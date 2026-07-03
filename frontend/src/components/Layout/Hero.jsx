@@ -4,8 +4,8 @@ const Hero = () => {
   return (
     <section className="relative h-[70vh] md:h-[80vh] overflow-hidden">
       <img
-        src="https://picsum.photos/seed/deshihero/1920/1080"
-        alt="DeshiWear collection"
+        src="https://images.pexels.com/photos/14928074/pexels-photo-14928074.jpeg?auto=compress&cs=tinysrgb&w=1920"
+        alt="Woman in a vibrant red saree on a rural Bangladeshi road"
         className="absolute inset-0 w-full h-full object-cover"
       />
       <div className="absolute inset-0 bg-gradient-to-r from-ink/80 via-ink/40 to-transparent" />

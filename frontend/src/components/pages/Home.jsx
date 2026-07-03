@@ -4,11 +4,14 @@ import FeaturedCollection from "../Products/FeaturedCollection";
 import FeaturesSection from "../Products/FeaturesSection";
 import NewArrivals from "../Products/NewArrivals";
 
+const px = (id) =>
+  `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=700`;
+
 const categories = [
-  { label: "Panjabi", image: "https://picsum.photos/seed/catpanjabi/600/800", to: "/collections/all?category=Panjabi" },
-  { label: "Saree", image: "https://picsum.photos/seed/catsaree/600/800", to: "/collections/all?category=Saree" },
-  { label: "Kurti", image: "https://picsum.photos/seed/catkurti/600/800", to: "/collections/all?category=Kurti" },
-  { label: "Urban", image: "https://picsum.photos/seed/caturban/600/800", to: "/collections/Urban Deshi" },
+  { label: "Panjabi", image: px(16777497), to: "/collections/all?category=Panjabi" },
+  { label: "Saree", image: px(30004204), to: "/collections/all?category=Saree" },
+  { label: "Kurti", image: px(36311379), to: "/collections/all?category=Kurti" },
+  { label: "Urban", image: px(1868566), to: "/collections/Urban Deshi" },
 ];
 
 const Home = () => {
