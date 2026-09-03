@@ -80,6 +80,28 @@ python3 scripts/crawl_aarong.py --config scripts/aarong_categories.json
 
 The crawler checks robots rules, identifies itself, waits 1.5 seconds between requests, retries transient failures, rejects non-image responses, and exits non-zero if any product type has fewer than the requested number of valid images. When Aarong's live catalog API is under maintenance, it can use the verified public image URLs in `scripts/aarong_indexed_images.json`. Aarong's images and product data remain Aarong's property; verify permission/licensing before using the downloaded files in production or marketing.
 
+## Catalog builder
+
+`data/` holds ~70 MB of full-resolution research images and stays out of git. `scripts/build_catalog.py` turns it into what the app actually ships:
+
+```bash
+python3 scripts/build_catalog.py
+```
+
+It writes three things, all generated — edit the inputs, not the outputs:
+
+| Output | Contents |
+| --- | --- |
+| `frontend/public/products/<type>/NN.webp` | every photo downscaled to 800px WebP (~70 MB → ~12 MB) |
+| `backend/data/products.js` | 115 seed products across all 16 storefront categories |
+| `frontend/src/data/catalogFacets.js` | the category/colour/size/material lists the filter sidebar renders |
+
+Product copy — names, descriptions, prices, size runs, tags — lives in `scripts/catalog_copy.py`. Colours are not written by hand: the builder samples each photograph, subtracts the studio backdrop (estimated from the image corners) and the skin-tone band, then matches what remains to the storefront palette in CIELAB. So filtering by "Maroon" returns things that are actually maroon.
+
+Generating the sidebar's facets from the seeded products is deliberate — the lists were previously maintained by hand and had drifted to offering seven categories with nothing behind them.
+
+Re-running is idempotent: same inputs produce a byte-identical seed, so a rebuild shows no diff. Run `npm run seed` in `backend/` afterwards to load the regenerated catalog.
+
 ## 🌐 Environment Setup
 
 Make sure you have the following installed:
