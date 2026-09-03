@@ -1,0 +1,73 @@
+{
+  "Panjabi": [
+    "/bgd/men/panjabi"
+  ],
+  "Saree": [
+    "/bgd/women/saree"
+  ],
+  "Kurti": [
+    "/bgd/women/kurta"
+  ],
+  "Kurta": [
+    "/bgd/women/kurta"
+  ],
+  "Shalwar Kameez": [
+    "/bgd/women/shalwar-kameez"
+  ],
+  "Three Piece": [
+    "/bgd/women/shalwar-kameez"
+  ],
+  "T-Shirt": [
+    "/bgd/men/t-shirts"
+  ],
+  "Shirt": [
+    "/bgd/men/shirts"
+  ],
+  "Bottom Wear": [
+    "/bgd/women/pants"
+  ],
+  "Shawl": [
+    "/bgd/women/shawls",
+    "/bgd/men/shawls"
+  ],
+  "Scarves": [
+    "/bgd/women/scarves"
+  ],
+  "Nightwear": [
+    "/bgd/women/nightwear"
+  ],
+  "Jewellery": [
+    "/bgd/jewellery"
+  ],
+  "Bags": [
+    "/bgd/women/accessories/bags"
+  ],
+  "Fabric": [
+    "/bgd/women/fabric-metres"
+  ],
+  "Kids": [
+    "/bgd/kids/junior-girls-2y-9y",
+    "/bgd/kids/junior-boys-2y-7y"
+  ],
+  "Kids Partywear": [
+    "/bgd/kids/kids-partywear"
+  ],
+  "Junior Girls (2Y-9Y)": [
+    "/bgd/kids/junior-girls-2y-9y"
+  ],
+  "Junior Boys (2Y-7Y)": [
+    "/bgd/kids/junior-boys-2y-7y"
+  ],
+  "Girls (8Y-15Y)": [
+    "/bgd/kids/girls-8y-15y"
+  ],
+  "Boys (8Y-15Y)": [
+    "/bgd/kids/boys-8y-15y"
+  ],
+  "Newborn Girls (0-1.5Y)": [
+    "/bgd/kids/newborn-girls-0-1-5y"
+  ],
+  "Newborn Boys (0-1.5Y)": [
+    "/bgd/kids/newborn-boys-0-1-5y"
+  ]
+}

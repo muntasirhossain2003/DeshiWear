@@ -56,6 +56,30 @@ Admin login: `admin@deshiwear.com` / `admin123` → then visit `/admin`.
 
 For a real database, set `MONGO_URI` in `backend/.env` to a MongoDB Atlas connection string.
 
+## Aarong product-image research crawler
+
+The repository includes a dependency-free Python crawler that maps directly matching Aarong public catalog routes to all sixteen DeshiWear product types plus seven child apparel segments, and collects ten representative product images per type. It writes each type to its own folder with a Markdown index, plus attributed JSON/CSV metadata under `data/aarong/`; it does not modify the seed database. `Kurti`/`Kurta` and `Three Piece`/`Shalwar Kameez` are retained as separate DeshiWear labels even though each pair maps to the same Aarong category.
+
+```bash
+python3 scripts/crawl_aarong.py --list-types
+python3 scripts/crawl_aarong.py --images-per-type 10
+```
+
+Useful options:
+
+```bash
+# Crawl only selected types
+python3 scripts/crawl_aarong.py --types Saree Panjabi --images-per-type 10
+
+# Export image URLs and product metadata without downloading files
+python3 scripts/crawl_aarong.py --metadata-only
+
+# Use a custom product-type-to-category mapping
+python3 scripts/crawl_aarong.py --config scripts/aarong_categories.json
+```
+
+The crawler checks robots rules, identifies itself, waits 1.5 seconds between requests, retries transient failures, rejects non-image responses, and exits non-zero if any product type has fewer than the requested number of valid images. When Aarong's live catalog API is under maintenance, it can use the verified public image URLs in `scripts/aarong_indexed_images.json`. Aarong's images and product data remain Aarong's property; verify permission/licensing before using the downloaded files in production or marketing.
+
 ## 🌐 Environment Setup
 
 Make sure you have the following installed:
