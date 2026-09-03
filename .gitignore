@@ -8,6 +8,9 @@ node_modules/
 # Embedded dev database
 backend/.mongo-data/
 
+# Crawler output — raw third-party research images (regenerate with scripts/crawl_aarong.py)
+data/
+
 # Build output
 frontend/dist/
 
