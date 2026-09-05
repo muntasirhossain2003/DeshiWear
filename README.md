@@ -60,6 +60,12 @@ Admin login: `admin@deshiwear.com` / `admin123` → then visit `/admin`.
 
 For a real database, set `MONGO_URI` in `backend/.env` to a MongoDB Atlas connection string.
 
+### Free deployment (Render + MongoDB Atlas)
+
+The repository includes [`render.yaml`](render.yaml) for a single-service deployment. Create a free MongoDB Atlas M0 cluster, add its connection string as `MONGO_URI` in Render, and optionally add `GROQ_API_KEY` or `GEMINI_API_KEY` for the AI assistant. Render will build both apps and serve the Vite frontend from Express; the generated `JWT_SECRET` must remain private. Free Render services sleep after inactivity, so the first request can take longer. Atlas M0 and Render free services have usage limits; they are suitable for a student demo, not guaranteed production capacity.
+
+See [`backend/.env.example`](backend/.env.example) for the supported environment variables.
+
 ## Aarong product-image research crawler
 
 The repository includes a dependency-free Python crawler that maps directly matching Aarong public catalog routes to all sixteen DeshiWear product types plus seven child apparel segments, and collects ten representative product images per type. It writes each type to its own folder with a Markdown index, plus attributed JSON/CSV metadata under `data/aarong/`; it does not modify the seed database. `Kurti`/`Kurta` and `Three Piece`/`Shalwar Kameez` are retained as separate DeshiWear labels even though each pair maps to the same Aarong category.
