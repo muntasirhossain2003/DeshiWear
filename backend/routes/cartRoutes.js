@@ -1,15 +1,26 @@
 import express from "express";
 import Cart from "../models/Cart.js";
 import Product from "../models/Product.js";
-import { protect } from "../middleware/authMiddleware.js";
+import { identify, protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-const getCart = (userId, guestId) => {
-  if (userId) return Cart.findOne({ user: userId });
-  if (guestId) return Cart.findOne({ guestId });
-  return null;
+// Every cart endpoint serves both guests and signed-in shoppers.
+router.use(identify);
+
+// Resolve whose cart this request may touch.
+//
+// The owner comes from the verified token, never from the request body. An
+// earlier version read `userId` off the payload, which let anyone who knew an
+// account id — it is returned by login and register — read, fill or empty that
+// account's cart with no token at all.
+const cartOwner = (req) => {
+  const guestId = req.body?.guestId || req.query?.guestId;
+  if (req.user) return { user: req.user._id };
+  return guestId ? { guestId } : null;
 };
+
+const getCart = (owner) => (owner ? Cart.findOne(owner) : null);
 
 const recalc = (cart) => {
   cart.totalPrice = cart.products.reduce((acc, p) => acc + p.price * p.quantity, 0);
@@ -17,12 +28,19 @@ const recalc = (cart) => {
 
 // POST /api/cart — add an item (guest or logged in)
 router.post("/", async (req, res) => {
-  const { productId, quantity, size, color, guestId, userId } = req.body;
+  const { productId, quantity, size, color } = req.body;
   try {
+    const requestedQuantity = Number(quantity);
+    if (!Number.isInteger(requestedQuantity) || requestedQuantity < 1 || requestedQuantity > 99) {
+      return res.status(400).json({ message: "Quantity must be a whole number between 1 and 99" });
+    }
     const product = await Product.findById(productId);
     if (!product) return res.status(404).json({ message: "Product not found" });
 
-    let cart = await getCart(userId, guestId);
+    const owner = cartOwner(req);
+    if (!owner) return res.status(400).json({ message: "Sign in or supply a guestId" });
+
+    let cart = await getCart(owner);
     const item = {
       productId,
       name: product.name,
@@ -30,13 +48,12 @@ router.post("/", async (req, res) => {
       price: product.discountPrice || product.price,
       size,
       color,
-      quantity: Number(quantity) || 1,
+      quantity: requestedQuantity,
     };
 
     if (!cart) {
       cart = await Cart.create({
-        user: userId || undefined,
-        guestId: guestId || `guest_${Date.now()}`,
+        ...owner,
         products: [item],
         totalPrice: item.price * item.quantity,
       });
@@ -60,9 +77,13 @@ router.post("/", async (req, res) => {
 
 // PUT /api/cart — update quantity (0 removes)
 router.put("/", async (req, res) => {
-  const { productId, quantity, size, color, guestId, userId } = req.body;
+  const { productId, quantity, size, color } = req.body;
   try {
-    const cart = await getCart(userId, guestId);
+    const requestedQuantity = Number(quantity);
+    if (!Number.isInteger(requestedQuantity) || requestedQuantity < 0 || requestedQuantity > 99) {
+      return res.status(400).json({ message: "Quantity must be a whole number between 0 and 99" });
+    }
+    const cart = await getCart(cartOwner(req));
     if (!cart) return res.status(404).json({ message: "Cart not found" });
 
     const index = cart.products.findIndex(
@@ -70,7 +91,7 @@ router.put("/", async (req, res) => {
     );
     if (index === -1) return res.status(404).json({ message: "Item not in cart" });
 
-    if (quantity > 0) cart.products[index].quantity = quantity;
+    if (requestedQuantity > 0) cart.products[index].quantity = requestedQuantity;
     else cart.products.splice(index, 1);
 
     recalc(cart);
@@ -84,9 +105,9 @@ router.put("/", async (req, res) => {
 
 // DELETE /api/cart — remove an item
 router.delete("/", async (req, res) => {
-  const { productId, size, color, guestId, userId } = req.body;
+  const { productId, size, color } = req.body;
   try {
-    const cart = await getCart(userId, guestId);
+    const cart = await getCart(cartOwner(req));
     if (!cart) return res.status(404).json({ message: "Cart not found" });
 
     cart.products = cart.products.filter(
@@ -101,11 +122,10 @@ router.delete("/", async (req, res) => {
   }
 });
 
-// GET /api/cart?userId=&guestId=
+// GET /api/cart?guestId= — the signed-in cart comes from the token
 router.get("/", async (req, res) => {
-  const { userId, guestId } = req.query;
   try {
-    const cart = await getCart(userId, guestId);
+    const cart = await getCart(cartOwner(req));
     if (!cart) return res.json({ products: [], totalPrice: 0 });
     res.json(cart);
   } catch (error) {

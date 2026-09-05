@@ -1,6 +1,7 @@
 import express from "express";
 import Order from "../models/Order.js";
 import Cart from "../models/Cart.js";
+import Product from "../models/Product.js";
 import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -26,15 +27,37 @@ router.post("/", protect, async (req, res) => {
     const itemsPrice = cart.totalPrice;
     const shippingPrice = shippingFor(shippingAddress.city, itemsPrice);
 
-    const order = await Order.create({
-      user: req.user._id,
-      orderItems: cart.products,
-      shippingAddress,
-      paymentMethod: paymentMethod || "Cash on Delivery",
-      itemsPrice,
-      shippingPrice,
-      totalPrice: itemsPrice + shippingPrice,
-    });
+    // Revalidate and allocate stock at commit time. Cart quantities are only a
+    // quote; concurrent web/POS checkouts must never oversell the catalog.
+    const allocated = [];
+    for (const item of cart.products) {
+      const product = await Product.findOneAndUpdate(
+        { _id: item.productId, isPublished: true, countInStock: { $gte: item.quantity } },
+        { $inc: { countInStock: -item.quantity } },
+        { new: true }
+      );
+      if (!product) {
+        for (const prior of allocated) await Product.updateOne({ _id: prior.productId }, { $inc: { countInStock: prior.quantity } });
+        return res.status(409).json({ message: `${item.name} is no longer available in the requested quantity` });
+      }
+      allocated.push({ productId: item.productId, quantity: item.quantity });
+    }
+
+    let order;
+    try {
+      order = await Order.create({
+        user: req.user._id,
+        orderItems: cart.products,
+        shippingAddress,
+        paymentMethod: paymentMethod || "Cash on Delivery",
+        itemsPrice,
+        shippingPrice,
+        totalPrice: itemsPrice + shippingPrice,
+      });
+    } catch (createError) {
+      for (const prior of allocated) await Product.updateOne({ _id: prior.productId }, { $inc: { countInStock: prior.quantity } });
+      throw createError;
+    }
 
     cart.products = [];
     cart.totalPrice = 0;
