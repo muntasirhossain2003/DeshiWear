@@ -2,6 +2,10 @@
 
 DeshiWear is a modern e-commerce platform specializing in traditional and contemporary Bangladeshi fashion. Built with cutting-edge technologies to provide a seamless shopping experience.
 
+## Project documentation
+
+- [Software Requirements Specification: web store, shop management, and AI integration](docs/SRS.md)
+
 ## 🚀 Features
 
 - Responsive design for all devices
