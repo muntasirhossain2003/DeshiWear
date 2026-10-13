@@ -22,7 +22,7 @@ const Register = () => {
     if (user) {
       dispatch(mergeCart({ guestId }))
         .unwrap()
-        .catch(() => dispatch(fetchCart({ userId: user._id })));
+        .catch(() => dispatch(fetchCart()));
       navigate(redirect, { replace: true });
     }
   }, [user, dispatch, navigate, redirect, guestId]);

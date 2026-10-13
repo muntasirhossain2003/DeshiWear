@@ -8,6 +8,11 @@ node_modules/
 # Embedded dev database
 backend/.mongo-data/
 
+# Crawler output — raw third-party research images (regenerate with scripts/crawl_aarong.py)
+# Leading slash anchors this to the repo root; unanchored it would also swallow
+# backend/data/ and frontend/src/data/.
+/data/
+
 # Build output
 frontend/dist/
 

@@ -15,9 +15,11 @@ const saveCart = (cart) => localStorage.setItem("cart", JSON.stringify(cart));
 
 export const fetchCart = createAsyncThunk(
   "cart/fetchCart",
-  async ({ userId, guestId }, { rejectWithValue }) => {
+  // A signed-in shopper is identified by their token; guestId only matters
+  // before sign-in. The server never accepts an account id from the caller.
+  async ({ guestId } = {}, { rejectWithValue }) => {
     try {
-      const { data } = await api.get("/api/cart", { params: { userId, guestId } });
+      const { data } = await api.get("/api/cart", { params: { guestId } });
       return data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || "Failed to load cart");
