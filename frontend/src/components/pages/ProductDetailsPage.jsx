@@ -68,8 +68,7 @@ const ProductDetailsPage = () => {
         quantity,
         size: selectedSize,
         color: selectedColor,
-        guestId,
-        userId: user?._id,
+        ...(user ? {} : { guestId }),
       })
     )
       .unwrap()

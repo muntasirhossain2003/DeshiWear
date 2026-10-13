@@ -11,7 +11,8 @@ const CartContents = () => {
   const { cart } = useSelector((state) => state.cart);
   const { user, guestId } = useSelector((state) => state.auth);
 
-  const ids = { guestId, userId: user?._id };
+  // Signed in? The token identifies the cart. Otherwise fall back to guestId.
+  const ids = user ? {} : { guestId };
 
   const handleQuantity = (item, delta) => {
     dispatch(
