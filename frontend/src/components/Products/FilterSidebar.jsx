@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-
-const categories = ["Panjabi", "Saree", "Kurti", "Three Piece", "T-Shirt", "Shirt", "Bottom Wear", "Shawl", "Kids"];
-const genders = ["Men", "Women", "Unisex"];
-const colors = ["White", "Black", "Red", "Green", "Blue", "Pink", "Maroon", "Mint", "Gold"];
-const sizes = ["S", "M", "L", "XL", "XXL", "Free Size"];
-const materials = ["Cotton", "Silk", "Jamdani", "Katan Silk", "Tant Cotton", "Georgette", "Denim", "Viscose"];
+import {
+  categories,
+  colorSwatches,
+  colors,
+  genders,
+  materials,
+  maxPrice as priceCeiling,
+  sizes,
+} from "../../data/catalogFacets";
 
 const FilterSidebar = () => {
   const [searchParams] = useSearchParams();
@@ -17,7 +20,7 @@ const FilterSidebar = () => {
     size: [],
     material: [],
     minPrice: 0,
-    maxPrice: 15000,
+    maxPrice: priceCeiling,
   });
 
   useEffect(() => {
@@ -29,7 +32,7 @@ const FilterSidebar = () => {
       size: params.size ? params.size.split(",") : [],
       material: params.material ? params.material.split(",") : [],
       minPrice: Number(params.minPrice) || 0,
-      maxPrice: Number(params.maxPrice) || 15000,
+      maxPrice: Number(params.maxPrice) || priceCeiling,
     });
   }, [searchParams]);
 
@@ -37,7 +40,7 @@ const FilterSidebar = () => {
     const params = new URLSearchParams(searchParams);
     Object.entries(newFilters).forEach(([key, value]) => {
       const str = Array.isArray(value) ? value.join(",") : String(value ?? "");
-      if (str && str !== "0" && !(key === "maxPrice" && str === "15000")) {
+      if (str && str !== "0" && !(key === "maxPrice" && str === String(priceCeiling))) {
         params.set(key, str);
       } else {
         params.delete(key);
@@ -120,7 +123,7 @@ const FilterSidebar = () => {
               className={`w-7 h-7 rounded-full border-2 transition-transform hover:scale-110 ${
                 filters.color === color ? "border-deshi-green ring-2 ring-deshi-green/30" : "border-gray-300"
               }`}
-              style={{ backgroundColor: color.toLowerCase() === "mint" ? "#98e0c8" : color.toLowerCase() }}
+              style={{ backgroundColor: colorSwatches[color] }}
             />
           ))}
         </div>
@@ -170,7 +173,7 @@ const FilterSidebar = () => {
         <input
           type="range"
           min={0}
-          max={15000}
+          max={priceCeiling}
           step={100}
           value={filters.maxPrice}
           onChange={(e) => handleChange("maxPrice", Number(e.target.value))}
